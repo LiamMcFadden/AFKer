@@ -1,21 +1,21 @@
 import time
 import keyboard
-import mouse
 import random
 from sys import exit
 from signal import signal, SIGINT
 import csv
+import pyautogui
 
 numIntervals = 0
-intervals = 0 
+intervalLength = 0
 
 # handle ctrl-C
 def handler(signal_recieved, frame):
-    if (intervals == 0):
+    if (intervalLength == 0):
         print("Goodbye!")
         exit()
 
-    print("You were AFK for about", numIntervals, "intervals of", intervals, "seconds!")
+    print("You were AFK for about", numIntervals, "intervals of", intervalLength, "seconds!")
     exit()
 
 signal(SIGINT, handler)
@@ -31,12 +31,15 @@ def move(intervals):
     keyboard.release('s')
     numIntervals += 1
 
-def respawn(x, y):
-    mouse.move(x, y)
-    mouse.click()
+def respawnGame(x, y):
+    pyautogui.moveTo(x, y)
+    pyautogui.click()
 
 def afk(interval=None, x=None, y=None, profile=None):
-    global intervals
+    global intervalLength
+    intervalLength = interval
+
+    # called w/out with profile
     if profile is None:
         if x is None or y is None:
             while True:
@@ -44,34 +47,37 @@ def afk(interval=None, x=None, y=None, profile=None):
         else:
             while True:
                 move(interval)
-                if numIntervals % intervals == 0:
-                    respawn(x, y)
+                if numIntervals % interval == 0:
+                    respawnGame(x,y)
+
+    # called with profile
     else:
         csvfile = open('profile.csv', 'r', newline='')
         data = csv.reader(csvfile)
-        x = 0
-        y = 0
+        xcoord = 0
+        ycoord = 0
         for row in data:
             if row[0] == profile:
-                intervals = int(row[1])
+                interval = int(row[1])
+                intervalLength = interval
                 x = int(row[2])
                 y = int(row[3])
                 break
         if x == 0 and y == 0:
             while True:
-                move(intervals)
+                move(interval)
         else:
             while True:
-                move(intervals)
-                if (numIntervals % intervals == 0):
-                        respawn(x,y)
+                move(interval)
+                if numIntervals % interval == 0:
+                    respawnGame(x,y)
 
 # set up a new profile
 newProf = input("Would you like to create a new game profile?(y/n): ")
 if (newProf == 'y'):
     profName = input("Name your profile: ")
     data = {}
-    intervals = int(input("How long would you like to wait between movments?: "))
+    intervals = int(input("How long would you like to wait between movments in seconds?: "))
     respawn = input("Would you like to check for respawn?(y/n): ")
     y = 0
     x = 0
@@ -79,12 +85,12 @@ if (newProf == 'y'):
         print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
         x = int(input("x coord: "))
         y = int(input("y coord: "))
-        mouse.move(x,y,duration=1)
+        pyautogui.moveTo(x,y,duration=1)
         good = input("Is this correct?(y/n): ")
         while (good != 'y'):
             x = int(input("x coord: "))
             y = int(input("y coord: "))
-            mouse.move(x,y,duration=1)
+            pyautogui.moveTo(x,y,duration=1)
             good = input("Is this correct?(y/n): ")
 
     data = [profName,intervals,x,y]
@@ -100,25 +106,25 @@ else:
         profName = input("What is the name of your profile?: ")
         print("When you're back, press ctrl+C to quit.")
         afk(profile=profName)
-        
+
     print("How long would you like the intervals between movments to be in seconds?")
     intervals = int(input())
     respawn = input("Would you like to check for respawn?(y/n): ")
-    y = 0
-    x = 0
+    ycoord = 0
+    xcoord = 0
     if (respawn == 'y'):
         print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
-        x = int(input("x coord: "))
-        y = int(input("y coord: "))
-        mouse.move(x,y,duration=1)
+        xcoord = int(input("x coord: "))
+        ycoord = int(input("y coord: "))
+        pyautogui.moveTo(xcoord,ycoord,duration=1)
         good = input("Is this correct?(y/n): ")
         while (good != 'y'):
-            x = int(input("x coord: "))
-            y = int(input("y coord: "))
-            mouse.move(x,y,duration=1)
+            xcoord = int(input("x coord: "))
+            ycoord  = int(input("y coord: "))
+            pyautogui.moveTo(xcoord,ycoord,duration=1)
             good = input("Is this correct?(y/n): ")
         print("When you're back, press ctrl+C to quit.")
-        afk(interval=intervals, x=x, y=y)
+        afk(interval=intervals, x=xcoord, y=ycoord)
     print("When you're back, press ctrl+C to quit.")
     afk(interval=intervals)
 
