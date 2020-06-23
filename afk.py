@@ -54,8 +54,6 @@ def afk(interval=None, x=None, y=None, profile=None):
     else:
         csvfile = open('profile.csv', 'r', newline='')
         data = csv.reader(csvfile)
-        xcoord = 0
-        ycoord = 0
         for row in data:
             if row[0] == profile:
                 interval = int(row[1])
