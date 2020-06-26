@@ -70,60 +70,61 @@ def afk(interval=None, x=None, y=None, profile=None):
                 if numIntervals % interval == 0:
                     respawnGame(x,y)
 
-# set up a new profile
-newProf = input("Would you like to create a new game profile?(y/n): ")
-if (newProf == 'y'):
-    profName = input("Name your profile: ")
-    data = {}
-    intervals = int(input("How long would you like to wait between movments in seconds?: "))
-    respawn = input("Would you like to check for respawn?(y/n): ")
-    y = 0
-    x = 0
-    if (respawn == 'y'):
-        print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
-        x = int(input("x coord: "))
-        y = int(input("y coord: "))
-        pyautogui.moveTo(x,y,duration=1)
-        good = input("Is this correct?(y/n): ")
-        while (good != 'y'):
+if __name__ == "__main__":
+    # set up a new profile
+    newProf = input("Would you like to create a new game profile?(y/n): ")
+    if (newProf == 'y'):
+        profName = input("Name your profile: ")
+        data = {}
+        intervals = int(input("How long would you like to wait between movments in seconds?: "))
+        respawn = input("Would you like to check for respawn?(y/n): ")
+        y = 0
+        x = 0
+        if (respawn == 'y'):
+            print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
             x = int(input("x coord: "))
             y = int(input("y coord: "))
             pyautogui.moveTo(x,y,duration=1)
             good = input("Is this correct?(y/n): ")
+            while (good != 'y'):
+                x = int(input("x coord: "))
+                y = int(input("y coord: "))
+                pyautogui.moveTo(x,y,duration=1)
+                good = input("Is this correct?(y/n): ")
 
-    data = [profName,intervals,x,y]
-    csvfile = open('profile.csv', 'a', newline='')
-    writer = csv.writer(csvfile)
-    writer.writerow(data)
-    print("When you're back, press ctrl+C to quit.")
-    afk(profile=profName)
-
-else:
-    loadProf = input("Would you like to load a profile?(y/n): ")
-    if loadProf == 'y':
-        profName = input("What is the name of your profile?: ")
+        data = [profName,intervals,x,y]
+        csvfile = open('profile.csv', 'a', newline='')
+        writer = csv.writer(csvfile)
+        writer.writerow(data)
         print("When you're back, press ctrl+C to quit.")
         afk(profile=profName)
 
-    print("How long would you like the intervals between movments to be in seconds?")
-    intervals = int(input())
-    respawn = input("Would you like to check for respawn?(y/n): ")
-    ycoord = 0
-    xcoord = 0
-    if (respawn == 'y'):
-        print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
-        xcoord = int(input("x coord: "))
-        ycoord = int(input("y coord: "))
-        pyautogui.moveTo(xcoord,ycoord,duration=1)
-        good = input("Is this correct?(y/n): ")
-        while (good != 'y'):
+    else:
+        loadProf = input("Would you like to load a profile?(y/n): ")
+        if loadProf == 'y':
+            profName = input("What is the name of your profile?: ")
+            print("When you're back, press ctrl+C to quit.")
+            afk(profile=profName)
+
+        print("How long would you like the intervals between movments to be in seconds?")
+        intervals = int(input())
+        respawn = input("Would you like to check for respawn?(y/n): ")
+        ycoord = 0
+        xcoord = 0
+        if (respawn == 'y'):
+            print("If (0,0) is the top left corner of your screen, about where do you think the button is?")
             xcoord = int(input("x coord: "))
-            ycoord  = int(input("y coord: "))
+            ycoord = int(input("y coord: "))
             pyautogui.moveTo(xcoord,ycoord,duration=1)
             good = input("Is this correct?(y/n): ")
+            while (good != 'y'):
+                xcoord = int(input("x coord: "))
+                ycoord  = int(input("y coord: "))
+                pyautogui.moveTo(xcoord,ycoord,duration=1)
+                good = input("Is this correct?(y/n): ")
+            print("When you're back, press ctrl+C to quit.")
+            afk(interval=intervals, x=xcoord, y=ycoord)
         print("When you're back, press ctrl+C to quit.")
-        afk(interval=intervals, x=xcoord, y=ycoord)
-    print("When you're back, press ctrl+C to quit.")
-    afk(interval=intervals)
+        afk(interval=intervals)
 
 
