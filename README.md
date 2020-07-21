@@ -6,13 +6,19 @@ Features include:
   - ability to make profiles for different games that are saved in the 'profiles.csv' file
 ### Setup / dependencies  
   - You need to manually download python from https://www.python.org/
-  - Then do the following commands in your command prompt:  
+  - Then type the following commands in your command prompt (use powershell if on windows):  
     ```
     cd ~/
     git clone https://github.com/LiamMcFadden/AFKer.git
     pip install keyboard
     pip install pyautogui
     ```
+  - You are now all set up. To use the program type:
+    ```
+    cd ~/AFKer/
+    python afker.py
+    ```
+
 
 
 
