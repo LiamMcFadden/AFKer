@@ -16,8 +16,9 @@ Features include:
   - You are now all set up. To use the program type:
     ```
     cd ~/AFKer/
-    python afker.py
+    python afk.py
     ```
+  - To quit at any time press ctrl + c.
 
 
 
