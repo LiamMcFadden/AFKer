@@ -132,7 +132,7 @@ if __name__ == "__main__":
         writer = csv.writer(csvfile)
         writer.writerow(data)
         print("When you're back, press ctrl+C to quit.")
-        afk(profile=profName)
+        afk(interval=intervals, x=x, y=y)
 
     else:
         loadProf = input("Would you like to load a profile?(y/n): ")
