@@ -6,17 +6,19 @@ Features include:
   - ability to make profiles for different games that are saved in the 'profiles.csv' file
 ### Setup / dependencies  
   - You need to manually download python from https://www.python.org/
-  - Then type the following commands in your command prompt (use powershell if on windows):  
+  - Then install with pip:
     ```
-    cd ~/
-    git clone https://github.com/LiamMcFadden/AFKer.git
-    pip install keyboard
-    pip install pyautogui
+    $ pip install AFKer
     ```
-  - You are now all set up. To use the program type:
+  - You are now all set up.  
+    To use the program, navigate to your default pip install location which can be found with:
     ```
-    cd ~/AFKer/
-    python afk.py
+    $ pip show AFKer
+    ```
+    And then type:
+    ```
+    $ cd <insert path from above here>/AFK
+    $ python afk.py
     ```
   - To quit at any time press ctrl + c.
 
