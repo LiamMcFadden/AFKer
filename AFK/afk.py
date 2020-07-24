@@ -132,6 +132,7 @@ if __name__ == "__main__":
         writer = csv.writer(csvfile)
         writer.writerow(data)
         print("When you're back, press ctrl+C to quit.")
+        intervals = int(intervals)
         afk(interval=intervals, x=x, y=y)
 
     else:
